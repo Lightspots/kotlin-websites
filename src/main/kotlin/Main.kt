@@ -1,11 +1,9 @@
-import react.dom.h1
+import ch.lightspots.it.web.Application
 import react.dom.render
 import kotlin.browser.document
 
 fun main() {
   render(document.getElementById("root")) {
-    h1 {
-      +"Hello, React+Kotlin/JS!"
-    }
+    child(Application::class) {}
   }
 }
