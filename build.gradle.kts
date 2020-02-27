@@ -1,0 +1,45 @@
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+import org.jetbrains.kotlin.gradle.targets.js.yarn.yarn
+
+plugins {
+  id("org.jetbrains.kotlin.js") version "1.3.70-eap-184"
+}
+
+group = "ch.lightspots.it.web"
+version = "1.0-SNAPSHOT"
+
+repositories {
+  maven("https://nexus.leber-lfbg.ch/repository/maven-public/")
+}
+
+dependencies {
+  implementation(kotlin("stdlib-js"))
+
+  //React, React DOM + Wrappers
+  implementation("org.jetbrains:kotlin-react:16.9.0-pre.89-kotlin-1.3.60")
+  implementation("org.jetbrains:kotlin-react-dom:16.9.0-pre.89-kotlin-1.3.60")
+  implementation(npm("react", "16.12.0"))
+  implementation(npm("react-dom", "16.12.0"))
+
+  //Kotlin Styled
+  implementation("org.jetbrains:kotlin-styled:1.0.0-pre.90-kotlin-1.3.61")
+  implementation(npm("styled-components"))
+  implementation(npm("inline-style-prefixer"))
+}
+
+kotlin {
+  target {
+    browser {
+    }
+  }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack> {
+  devServer = devServer?.copy(port = 8888)
+}
+
+afterEvaluate {
+  val content = "always-auth=true"
+  val file = File(project.buildDir, "js/.npmrc")
+  file.writeText(content)
+}
