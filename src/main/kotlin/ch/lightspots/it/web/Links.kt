@@ -1,7 +1,7 @@
 package ch.lightspots.it.web
 
-import ch.lightspots.it.web.pages.IndexComponent
 import ch.lightspots.it.web.pages.NotFoundComponent
+import ch.lightspots.it.web.pages.index.IndexComponent
 import react.Component
 import kotlin.reflect.KClass
 

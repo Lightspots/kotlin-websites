@@ -1,5 +1,5 @@
 plugins {
-  id("org.jetbrains.kotlin.js") version "1.3.70-eap-184"
+  id("org.jetbrains.kotlin.js") version "1.3.70-eap-274"
 }
 
 group = "ch.lightspots.it.web"
@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
   implementation(kotlin("stdlib-js"))
+  implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.3.3-1.3.70-eap-42")
 
   //React, React DOM + Wrappers
   implementation("org.jetbrains:kotlin-react:16.13.0-pre.92-kotlin-1.3.61")
