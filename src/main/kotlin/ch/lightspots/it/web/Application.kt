@@ -4,12 +4,27 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
-import react.dom.h1
+import react.dom.div
+import react.router.dom.hashRouter
+import react.router.dom.route
+import react.router.dom.switch
 
-class Application: RComponent<RProps, RState>() {
+class Application : RComponent<RProps, RState>() {
   override fun RBuilder.render() {
-    h1 {
-      +"Hello, React+Kotlin/JS"
+    div("section") {
+      div("container") {
+        header()
+        hashRouter {
+          switch {
+            Links.values().forEach {
+              route(it.route, it.component, exact = true)
+            }
+            // TODO catch all default route
+//          route(component = NotFoundComponent::class)
+          }
+          footer()
+        }
+      }
     }
   }
 }
