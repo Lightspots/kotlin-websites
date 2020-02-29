@@ -3,22 +3,27 @@ package ch.lightspots.it.web
 import kotlinx.css.em
 import kotlinx.css.margin
 import kotlinx.css.marginLeft
+import kotlinx.css.marginTop
 import react.RBuilder
 import react.RProps
 import react.RPureComponent
 import react.RState
 import react.dom.a
 import react.dom.div
-import react.dom.footer
 import react.dom.p
 import styled.css
 import styled.styledA
+import styled.styledFooter
 import styled.styledSpan
 import kotlin.js.Date
 
 class Footer : RPureComponent<RProps, RState>() {
   override fun RBuilder.render() {
-    footer("footer") {
+    styledFooter {
+      css {
+        +"footer"
+        marginTop = 2.em
+      }
       div("level") {
         div("level-left") {
           div("level-item") {
