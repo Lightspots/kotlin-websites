@@ -10,7 +10,6 @@ import kotlinx.css.PointerEvents
 import kotlinx.css.Position
 import kotlinx.css.pointerEvents
 import kotlinx.css.position
-import kotlinx.css.rgba
 import kotlinx.html.AREA
 import kotlinx.html.AreaShape
 import kotlinx.html.attributes.enumEncode
@@ -29,63 +28,16 @@ import react.RState
 import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.h2
+import react.dom.h4
 import react.dom.img
 import react.dom.jsStyle
 import react.dom.map
+import react.dom.p
 import react.dom.tag
 import react.setState
 import styled.css
 import styled.styledCanvas
 import kotlin.browser.window
-import kotlin.math.PI
-
-interface CoordEntry {
-  fun scale(scale: Double): CoordEntry
-  fun toCoordsString(): String
-}
-
-data class Radius(val r: Int) : CoordEntry {
-  override fun scale(scale: Double) = Radius((r * scale).toInt())
-  override fun toCoordsString() = r.toString()
-}
-
-data class Point(val x: Int, val y: Int) : CoordEntry {
-  override fun scale(scale: Double) = Point((x * scale).toInt(), (y * scale).toInt())
-
-  override fun toCoordsString() = "$x,$y"
-}
-
-data class Area(val name: String, val link: Link, val shape: AreaShape = AreaShape.poly, val points: List<CoordEntry>) {
-  fun draw(ctx: CanvasRenderingContext2D, scale: Double, isActive: Boolean) {
-    val p = points.map { it.scale(scale) }
-    val alpha = if (isActive) 0.25 else 0.15
-    if (shape == AreaShape.circle) {
-      val center = p[0] as Point
-      val r = p[1] as Radius
-      ctx.beginPath()
-      ctx.arc(center.x.toDouble(), center.y.toDouble(), r.r.toDouble(), 0.0, 2 * PI, false)
-      ctx.closePath()
-      ctx.fillStyle = rgba(100, 0, 255, alpha).toString()
-      ctx.fill()
-    }
-    if (shape == AreaShape.poly) {
-      ctx.beginPath()
-      val firstPoint = p[0] as Point
-      ctx.moveTo(firstPoint.x.toDouble(), firstPoint.y.toDouble())
-      for (i in 1 until p.size) {
-        val point = p[i] as Point
-        ctx.lineTo(point.x.toDouble(), point.y.toDouble())
-      }
-      ctx.closePath()
-      ctx.fillStyle = rgba(100, 0, 255, alpha).toString()
-      ctx.fill()
-    }
-  }
-}
-
-fun List<CoordEntry>.toCoords(scale: Double): String {
-  return this.map { it.scale(scale) }.joinToString(",") { it.toCoordsString() }
-}
 
 interface OverviewMapState : RState {
   var hoveredArea: Int?
@@ -238,6 +190,17 @@ class OverviewMap : RComponent<RProps, OverviewMapState>() {
     h2("title is-2") {
       +"Übersichtskarte"
     }
+    h4("subtitle is-4") {
+      +"Eine übersicht über das Gelände"
+    }
+    p {
+      +"Ein Klick auf eine markierte Fläche führt Sie direkt zur spezifischen Seite des Objektes."
+    }
+    canvas()
+    imageWithMap()
+  }
+
+  private fun RBuilder.canvas() {
     styledCanvas {
       css {
         position = Position.absolute
@@ -255,9 +218,9 @@ class OverviewMap : RComponent<RProps, OverviewMapState>() {
         height = (image?.height ?: 0).toString()
       }
     }
-    val scale = image?.let {
-      it.width.toDouble() / it.naturalWidth
-    } ?: 1.0
+  }
+
+  private fun RBuilder.imageWithMap() {
     img(alt = "", src = "images/overview.jpg") {
       attrs {
         usemap = "#overview-map"
@@ -267,6 +230,9 @@ class OverviewMap : RComponent<RProps, OverviewMapState>() {
       }
     }
     map("overview-map") {
+      val scale = image?.let {
+        it.width.toDouble() / it.naturalWidth
+      } ?: 1.0
       areas.forEachIndexed { index, a ->
         area(shape = a.shape, alt = a.name) {
           attrs {
@@ -288,12 +254,11 @@ class OverviewMap : RComponent<RProps, OverviewMapState>() {
       }
     }
   }
-
-
 }
 
 fun RBuilder.overviewMap() = child(OverviewMap::class) {}
 
+// fix area of wrappers, shape is wrongly spelled there
 inline fun RBuilder.area(shape: AreaShape? = null, alt: String? = null, classes: String? = null,
     block: RDOMBuilder<AREA>.() -> Unit): ReactElement = tag(block) {
   AREA(
