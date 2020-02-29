@@ -1,4 +1,4 @@
-package ch.lightspots.it.web.pages.index
+package ch.lightspots.it.web.shared
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
@@ -20,6 +20,7 @@ import kotlinx.css.listStyleType
 import kotlinx.css.margin
 import kotlinx.css.marginBottom
 import kotlinx.css.overflow
+import kotlinx.css.pct
 import kotlinx.css.position
 import kotlinx.css.properties.Timing
 import kotlinx.css.properties.Transition
@@ -116,6 +117,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
           styledLi {
             css {
               display = Display.inlineBlock
+              width = 100.pct
             }
             figure("image") {
               img(alt = "slider", src = image) { }

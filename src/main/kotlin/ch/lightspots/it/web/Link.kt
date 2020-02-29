@@ -2,6 +2,7 @@ package ch.lightspots.it.web
 
 import ch.lightspots.it.web.pages.NotFoundComponent
 import ch.lightspots.it.web.pages.area.AreaComponent
+import ch.lightspots.it.web.pages.halls.HallsComponent
 import ch.lightspots.it.web.pages.index.IndexComponent
 import ch.lightspots.it.web.pages.services.ServicesComponent
 import react.Component
@@ -14,7 +15,7 @@ enum class Link(
     val headerEntry: Boolean = true) {
   INDEX("Startseite", IndexComponent::class, linkName = "", headerEntry = false),
   STABLES("Stallungen", NotFoundComponent::class),
-  HALLS("Hallen", NotFoundComponent::class),
+  HALLS("Hallen", HallsComponent::class),
   PLACES("Plätze", NotFoundComponent::class, linkName = "plaetze"),
   SERVICES("Dienstleistungen", ServicesComponent::class),
   AREA("Gelände", AreaComponent::class, linkName = "gelaende"),
