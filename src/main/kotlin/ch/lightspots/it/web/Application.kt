@@ -16,7 +16,7 @@ class Application : RComponent<RProps, RState>() {
         header()
         hashRouter {
           switch {
-            Links.values().forEach {
+            Link.values().forEach {
               route(it.route, it.component, exact = true)
             }
             // TODO catch all default route

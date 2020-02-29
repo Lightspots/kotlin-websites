@@ -5,7 +5,7 @@ import ch.lightspots.it.web.pages.index.IndexComponent
 import react.Component
 import kotlin.reflect.KClass
 
-enum class Links(
+enum class Link(
     val displayName: String,
     val component: KClass<out Component<*, *>>,
     private val linkName: String = displayName.toLowerCase(),

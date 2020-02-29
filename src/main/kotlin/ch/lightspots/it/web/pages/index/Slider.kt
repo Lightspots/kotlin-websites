@@ -16,7 +16,6 @@ import kotlinx.css.borderRadius
 import kotlinx.css.cursor
 import kotlinx.css.display
 import kotlinx.css.height
-import kotlinx.css.left
 import kotlinx.css.listStyleType
 import kotlinx.css.margin
 import kotlinx.css.marginBottom
@@ -33,17 +32,20 @@ import kotlinx.css.whiteSpace
 import kotlinx.css.width
 import kotlinx.html.js.onClickFunction
 import org.w3c.dom.HTMLElement
+import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.figure
 import react.dom.img
+import react.dom.jsStyle
 import react.setState
 import styled.css
 import styled.styledDiv
 import styled.styledLi
 import styled.styledOl
+import kotlin.browser.window
 
 interface SliderProps : RProps {
   var images: Array<String>
@@ -51,7 +53,6 @@ interface SliderProps : RProps {
 
 interface SliderState : RState {
   var activeImage: Int
-  var job: Job?
 }
 
 
@@ -59,16 +60,25 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
   private var sliderElem: HTMLElement? = null
   private var job: Job? = null
 
+  // we need to add and remove the exact same reference, so save it here
+  private val onResize: (Event) -> Unit = {
+    // trigger a re render
+    setState { }
+    // restart auto rotation
+    startAutoRotation()
+  }
+
   override fun SliderState.init(props: SliderProps) {
     activeImage = 0
   }
 
   override fun componentDidMount() {
     startAutoRotation()
-    // todo listen on resize
+    window.addEventListener("resize", onResize)
   }
 
   override fun componentWillUnmount() {
+    window.removeEventListener("resize", onResize)
     job?.cancel()
   }
 
@@ -77,34 +87,42 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
       css {
         marginBottom = (-25).px
       }
-      styledDiv {
+      images()
+      dots()
+    }
+  }
+
+  private fun RBuilder.images() {
+    styledDiv {
+      css {
+        overflow = Overflow.hidden
+      }
+      styledOl {
         css {
-          overflow = Overflow.hidden
+          listStyleType = ListStyleType.none
+          whiteSpace = WhiteSpace.nowrap
+          position = Position.relative
+          transition += Transition("left", 1.5.s, Timing.easeInOut, 0.s)
         }
-        styledOl {
-          css {
-            listStyleType = ListStyleType.none
-            whiteSpace = WhiteSpace.nowrap
-            position = Position.relative
+        attrs {
+          jsStyle {
             left = sliderElem?.let { -it.offsetWidth * (state.activeImage) }?.px ?: 0.px
-            transition += Transition("left", 1.5.s, Timing.easeInOut, 0.s)
           }
-          ref {
-            sliderElem = it as? HTMLElement
-          }
-          for (image in props.images) {
-            styledLi {
-              css {
-                display = Display.inlineBlock
-              }
-              figure("image") {
-                img(alt = "slider", src = image) { }
-              }
+        }
+        ref {
+          sliderElem = it as? HTMLElement
+        }
+        for (image in props.images) {
+          styledLi {
+            css {
+              display = Display.inlineBlock
+            }
+            figure("image") {
+              img(alt = "slider", src = image) { }
             }
           }
         }
       }
-      dots()
     }
   }
 

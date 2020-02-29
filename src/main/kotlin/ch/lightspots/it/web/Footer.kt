@@ -21,18 +21,20 @@ class Footer : RPureComponent<RProps, RState>() {
     footer("footer") {
       div("level") {
         div("level-left") {
-          p("level-item") {
-            +"© 2014 - ${Date().getFullYear()} Stefan Ebner - All rights reserved, developed by"
-            styledA(href = "https://lightspots.ch", target = "_blank") {
-              css {
-                marginLeft = 0.25.em
+          div("level-item") {
+            p {
+              +"© 2014 - ${Date().getFullYear()} Stefan Ebner - All rights reserved, developed by"
+              styledA(href = "https://lightspots.ch", target = "_blank") {
+                css {
+                  marginLeft = 0.25.em
+                }
+                +"Lightspots GmbH"
               }
-              +"Lightspots GmbH"
             }
           }
         }
         div("level-right") {
-          a(href = Links.PRIVACY.href) {
+          a(href = Link.PRIVACY.href) {
             +"Datenschutz"
           }
           styledSpan {
@@ -41,7 +43,7 @@ class Footer : RPureComponent<RProps, RState>() {
             }
             +"-"
           }
-          a(href = Links.LEGAL_NOTICE.href) {
+          a(href = Link.LEGAL_NOTICE.href) {
             +" Impressum"
           }
         }
