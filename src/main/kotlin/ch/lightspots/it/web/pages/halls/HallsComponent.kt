@@ -11,6 +11,7 @@ import react.dom.b
 import react.dom.br
 import react.dom.div
 import react.dom.figure
+import react.dom.h1
 import react.dom.img
 import react.dom.p
 import styled.css
@@ -19,6 +20,9 @@ import styled.styledSpan
 class HallsComponent : RPureComponent<RProps, RState>() {
   override fun RBuilder.render() {
     div {
+      h1("title is-1") {
+        +"Hallen"
+      }
       reithalle()
       longierHalle()
     }
