@@ -1,5 +1,7 @@
 package ch.lightspots.it.web
 
+import ch.lightspots.it.react.router.dom.route
+import ch.lightspots.it.web.pages.NotFoundComponent
 import react.RBuilder
 import react.RComponent
 import react.RProps
@@ -19,8 +21,7 @@ class Application : RComponent<RProps, RState>() {
             Link.values().forEach {
               route(it.route, it.component, exact = true)
             }
-            // TODO catch all default route
-//          route(component = NotFoundComponent::class)
+            route(component = NotFoundComponent::class)
           }
           footer()
         }

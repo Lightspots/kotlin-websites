@@ -8,15 +8,11 @@ version = "1.0-SNAPSHOT"
 
 
 repositories {
-  maven {
-    credentials {
-      username = if (project.hasProperty("nexusUsername")) "${project.property(
-          "nexusUsername")}" else System.getenv("NEXUS_USER")
-      password = if (project.hasProperty("nexusPassword")) "${project.property(
-          "nexusPassword")}" else System.getenv("NEXUS_PASS")
-    }
-    setUrl("https://nexus.leber-lfbg.ch/repository/maven-public/")
-  }
+  mavenCentral()
+  jcenter()
+  maven("https://dl.bintray.com/kotlin/kotlin-eap/")
+  maven("https://kotlin.bintray.com/kotlin-js-wrappers")
+  maven("https://kotlin.bintray.com/kotlinx")
 }
 
 dependencies {
@@ -39,6 +35,7 @@ dependencies {
 
 kotlin {
   target {
+    useCommonJs()
     browser {
     }
   }
@@ -49,7 +46,6 @@ tasks.withType<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack> {
 }
 
 afterEvaluate {
-  // TODO use internal registry
   val content = """
     |registry=https://registry.npmjs.org
     |always-auth=false
