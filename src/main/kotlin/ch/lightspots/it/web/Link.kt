@@ -4,6 +4,8 @@ import ch.lightspots.it.web.pages.NotFoundComponent
 import ch.lightspots.it.web.pages.area.AreaComponent
 import ch.lightspots.it.web.pages.halls.HallsComponent
 import ch.lightspots.it.web.pages.index.IndexComponent
+import ch.lightspots.it.web.pages.legalnotice.LegalNoticeComponent
+import ch.lightspots.it.web.pages.privacy.PrivacyComponent
 import ch.lightspots.it.web.pages.services.ServicesComponent
 import react.Component
 import kotlin.reflect.KClass
@@ -20,8 +22,8 @@ enum class Link(
   SERVICES("Dienstleistungen", ServicesComponent::class),
   AREA("Gelände", AreaComponent::class, linkName = "gelaende"),
   CONTACT("Kontakt", NotFoundComponent::class),
-  PRIVACY("Datenschutz", NotFoundComponent::class, headerEntry = false),
-  LEGAL_NOTICE("Impressum", NotFoundComponent::class, headerEntry = false);
+  PRIVACY("Datenschutz", PrivacyComponent::class, headerEntry = false),
+  LEGAL_NOTICE("Impressum", LegalNoticeComponent::class, headerEntry = false);
 
   val href: String
     get() = "#/$linkName"

@@ -1,12 +1,15 @@
 package ch.lightspots.it.web.pages.services
 
+import kotlinx.css.em
+import kotlinx.css.marginTop
 import react.RBuilder
 import react.RProps
 import react.RPureComponent
 import react.RState
 import react.dom.h1
-import react.dom.h2
 import react.dom.p
+import styled.css
+import styled.styledH3
 
 class ServicesComponent : RPureComponent<RProps, RState>() {
 
@@ -14,7 +17,10 @@ class ServicesComponent : RPureComponent<RProps, RState>() {
     h1("title is-1") {
       +"Dienstleistungen"
     }
-    h2("title is-2") {
+    styledH3 {
+      css {
+        +"title is-3"
+      }
       +"Fütterung"
     }
     p {
@@ -23,13 +29,21 @@ class ServicesComponent : RPureComponent<RProps, RState>() {
     p {
       +"Gefüttert wird Morgens und Abends. Selbstverständlich besteht die Möglichkeit auch eigenes Kraftfutter (Müsli) zu verabreichen."
     }
-    h2("title is-2") {
+    styledH3 {
+      css {
+        +"title is-3"
+        marginTop = 1.em
+      }
       +"Einstreu"
     }
     p {
       +"Als Einstreu stellen wir Stroh und Sägespäne zur Verfügung."
     }
-    h2("title is-2") {
+    styledH3 {
+      css {
+        +"title is-3"
+        marginTop = 1.em
+      }
       +"Weidegang"
     }
     p {
