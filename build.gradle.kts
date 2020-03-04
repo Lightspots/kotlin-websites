@@ -1,11 +1,9 @@
 plugins {
-  id("org.jetbrains.kotlin.js") version "1.3.70-eap-274"
+  id("org.jetbrains.kotlin.js") version "1.3.70"
 }
 
 group = "ch.lightspots.it.web"
 version = "1.0-SNAPSHOT"
-
-
 
 repositories {
   mavenCentral()
