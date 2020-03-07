@@ -11,7 +11,7 @@ import react.router.dom.hashRouter
 import react.router.dom.route
 import react.router.dom.switch
 
-class Application : RComponent<RProps, RState>() {
+class Website : RComponent<RProps, RState>() {
   override fun RBuilder.render() {
     div("section") {
       div("container") {
