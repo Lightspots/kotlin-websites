@@ -8,6 +8,8 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.css.PointerEvents
 import kotlinx.css.Position
+import kotlinx.css.em
+import kotlinx.css.marginTop
 import kotlinx.css.pointerEvents
 import kotlinx.css.position
 import kotlinx.html.AREA
@@ -28,15 +30,18 @@ import react.RState
 import react.ReactElement
 import react.dom.RDOMBuilder
 import react.dom.h2
+import react.dom.h3
 import react.dom.h4
 import react.dom.img
 import react.dom.jsStyle
 import react.dom.map
+import react.dom.mark
 import react.dom.p
 import react.dom.tag
 import react.setState
 import styled.css
 import styled.styledCanvas
+import styled.styledH3
 import kotlin.browser.window
 
 interface OverviewMapState : RState {
@@ -187,11 +192,12 @@ class OverviewMap : RComponent<RProps, OverviewMapState>() {
   }
 
   override fun RBuilder.render() {
-    h2("title is-2") {
+    styledH3 {
+      css {
+        +"title is-3"
+        marginTop = 1.em
+      }
       +"Übersichtskarte"
-    }
-    h4("subtitle is-4") {
-      +"Eine übersicht über das Gelände"
     }
     p {
       +"Ein Klick auf eine markierte Fläche führt Sie direkt zur spezifischen Seite des Objektes."

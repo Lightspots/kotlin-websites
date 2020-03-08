@@ -26,7 +26,7 @@ class ContactComponent : RPureComponent<RProps, RState>() {
           p {
             +"Stefan Ebner"
             br { }
-            +"Weidweg 15"
+            +"Waidweg 15"
             br { }
             +"79725 Laufenburg"
           }
@@ -39,8 +39,6 @@ class ContactComponent : RPureComponent<RProps, RState>() {
           }
           p {
             +"Telefon: 0170 1133540"
-            br { }
-            +"Weidweg 15"
             br { }
             +"E-Mail: info[at]reitstall-goldberghof.de"
           }

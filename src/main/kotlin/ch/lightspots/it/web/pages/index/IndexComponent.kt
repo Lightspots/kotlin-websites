@@ -24,10 +24,13 @@ class IndexComponent : RComponent<RProps, RState>() {
         +"Reitstall Goldberghof"
       }
       p {
-        +"Der Goldberghof liegt im Süden Deutschlands, wie der Name sagt auf einem kleinen Berg"
+        +"Wie der Name bereits verlauten lässt, liegt der ehemalige Kuhmilch-Bauernhof auf einem kleinen Berg im Süden Deutschlands."
       }
       p {
-        +"Wir bieten 2 Reitplätze, eine Reithalle sowie eine Longierhalle"
+        +"Als Familienbetrieb geben wir unser Bestes, um Ihnen und Ihren Pferden das bestmögliche zu bieten."
+      }
+      p {
+        +"Unser Hof setzt sich aus diversen unterschiedlichen Pferdeboxen, zwei Reitpätzen, eine Reithalle, sowie eine Longierhalle zusammen, welche hier ersichtlich sind:"
       }
       overviewMap()
     }

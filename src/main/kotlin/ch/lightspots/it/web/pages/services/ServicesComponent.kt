@@ -27,7 +27,7 @@ class ServicesComponent : RPureComponent<RProps, RState>() {
       +"Das Grundfutter besteht wahlweise aus Heu, Silage, Pellets (derby Standart) oder ganzem Hafer."
     }
     p {
-      +"Gefüttert wird Morgens und Abends. Selbstverständlich besteht die Möglichkeit auch eigenes Kraftfutter (Müsli) zu verabreichen."
+      +"Gefüttert wird jeweils morgens und abends. Selbstverständlich besteht die Möglichkeit, auch eigenes Kraftfutter (Müsli) zu verabreichen."
     }
     styledH3 {
       css {
@@ -47,7 +47,7 @@ class ServicesComponent : RPureComponent<RProps, RState>() {
       +"Weidegang"
     }
     p {
-      +"Zu jeder Box oder offen Stall gehört eine Weide, es besteht aber auch die Möglichkeit die Pferde bei Verträglichkeit zusammenzustellen. Wir bringen Ihre Pferde je nach Wunsch halbtags oder ev. Stundenweise auf die Weide, je nach Vereinbarung. Die Weidedienstleistung wird nur zwischen Mitte April und Anfang November angeboten, je nach Witterung."
+      +"Zu jeder Box oder offenem Stall gehört eine Weide; es besteht auch die Möglichkeit, die Pferde bei Verträglichkeit zusammenzustellen. Wir bringen Ihre Pferde, je nach Wunsch, halbtags oder evtl. Stundenweise auf die Weide (individuelle Vereinbarung). Die Weidedienstleistung wird nur von Mitte April bis anfangs November angeboten (Witterungsabhängig)."
     }
   }
 }
