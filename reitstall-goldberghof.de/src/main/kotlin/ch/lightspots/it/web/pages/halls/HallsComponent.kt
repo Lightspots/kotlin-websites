@@ -1,6 +1,6 @@
 package ch.lightspots.it.web.pages.halls
 
-import ch.lightspots.it.web.shared.slider
+import ch.lightspots.it.web.slider.slider
 import kotlinx.css.em
 import kotlinx.css.marginLeft
 import react.RBuilder

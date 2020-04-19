@@ -1,4 +1,4 @@
-package ch.lightspots.it.web.shared
+package ch.lightspots.it.web.slider
 
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job

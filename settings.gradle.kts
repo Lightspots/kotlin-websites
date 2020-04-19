@@ -6,6 +6,7 @@ pluginManagement {
   }
 }
 
+include("shared")
 include("reitstall-goldberghof.de")
 
 rootProject.name = "kotlin-websites"

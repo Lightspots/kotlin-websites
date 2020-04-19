@@ -1,6 +1,6 @@
 package ch.lightspots.it.web.pages.stables
 
-import ch.lightspots.it.web.shared.slider
+import ch.lightspots.it.web.slider.slider
 import react.RBuilder
 import react.RHandler
 import react.RProps
