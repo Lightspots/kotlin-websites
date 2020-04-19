@@ -5,4 +5,7 @@ pluginManagement {
     gradlePluginPortal()
   }
 }
-rootProject.name = "reitstall-goldberghof"
+
+include("reitstall-goldberghof.de")
+
+rootProject.name = "kotlin-websites"
