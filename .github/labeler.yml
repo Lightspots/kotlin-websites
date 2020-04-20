@@ -1,0 +1,18 @@
+area/repo:
+  - ./*
+  - .github/*
+  - .github/**/*
+  - gradle/*
+  - gradle/**/*
+
+area/leber-gartenbahn.ch:
+  - leber-gartenbahn.ch/*
+  - leber-gartenbahn.ch/**/*
+
+area/reitstall-goldberghof.de:
+  - reitstall-goldberghof.de/*
+  - reitstall-goldberghof.de/**/*
+
+area/shared:
+  - shared/*
+  - shared/**/*
