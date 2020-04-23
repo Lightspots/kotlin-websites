@@ -28,13 +28,3 @@ kotlin {
 tasks.withType<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack> {
   devServer = devServer?.copy(port = 8888)
 }
-
-// afterEvaluate {
-//   val content = """
-//     |registry=https://registry.npmjs.org
-//     |always-auth=false
-//     |
-//   """.trimMargin()
-//   val file = File(project.buildDir, "js/.npmrc")
-//   file.writeText(content)
-// }
