@@ -32,7 +32,9 @@ import kotlinx.css.top
 import kotlinx.css.transition
 import kotlinx.css.whiteSpace
 import kotlinx.css.width
+import kotlinx.html.currentTimeMillis
 import kotlinx.html.js.onClickFunction
+import org.w3c.dom.DataTransferItemList
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import react.RBuilder
@@ -49,6 +51,8 @@ import styled.styledLi
 import styled.styledOl
 import kotlin.browser.window
 import kotlin.coroutines.coroutineContext
+import kotlin.js.Date
+import kotlin.random.Random
 
 enum class Direction {
   LEFT, RIGHT
@@ -64,6 +68,7 @@ interface SliderState : RState {
   var activeImage: Int
   var activeDot: Int
   var transitionEnabled: Boolean
+  var images: Array<String>
 }
 
 
@@ -96,6 +101,13 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     activeImage = 1
     activeDot = 1
     transitionEnabled = false
+    images = if (props.random) {
+      val shuffled = props.images.copyOf()
+      shuffled.shuffle(Random(currentTimeMillis()))
+      shuffled
+    } else {
+      props.images
+    }
   }
 
   override fun componentDidMount() {
@@ -155,10 +167,10 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
             width = 100.pct
           }
           figure("image") {
-            img(alt = "slider", src = props.images.last()) { }
+            img(alt = "slider", src = state.images.last()) { }
           }
         }
-        for (image in props.images) {
+        for (image in state.images) {
           styledLi {
             css {
               display = Display.inlineBlock
@@ -175,7 +187,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
             width = 100.pct
           }
           figure("image") {
-            img(alt = "slider", src = props.images.first()) { }
+            img(alt = "slider", src = state.images.first()) { }
           }
         }
       }
@@ -190,7 +202,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         position = Position.relative
         top = (-30).px
       }
-      for (i in props.images.indices.map { it + 1 }) {
+      for (i in state.images.indices.map { it + 1 }) {
         styledLi {
           css {
             display = Display.inlineBlock
@@ -234,7 +246,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
   }
 
   private suspend fun rotateRight() {
-    val newActiveImage = (state.activeImage) % (props.images.size) + 1
+    val newActiveImage = (state.activeImage) % (state.images.size) + 1
     GlobalScope.launch(coroutineContext) {
       if (newActiveImage == 1) {
         setState {
@@ -257,15 +269,15 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
       if (newActiveImage == 0) {
         setState {
           activeImage = 0
-          activeDot = props.images.size
+          activeDot = state.images.size
         }
-        newActiveImage = props.images.size
+        newActiveImage = state.images.size
         delay(2000)
       }
       setState {
         activeImage = newActiveImage
         activeDot = newActiveImage
-        transitionEnabled = newActiveImage != props.images.size
+        transitionEnabled = newActiveImage != state.images.size
       }
     }
   }
@@ -275,7 +287,17 @@ fun RBuilder.slider(images: Array<String>, random: Boolean = false, direction: D
     Slider::class) {
   attrs {
     this.images = images
-    this.random = random // TODO
+    this.random = random
     this.direction = direction
+  }
+}
+
+fun <T> Array<T>.shuffle(rnd: Random) {
+  // Fisher-Yates shuffle algorithm
+  for (i in this.size - 1 downTo 1) {
+    val j = rnd.nextInt(i + 1)
+    val temp = this[i]
+    this[i] = this[j]
+    this[j] = temp
   }
 }
