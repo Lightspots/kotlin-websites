@@ -1,5 +1,6 @@
 package ch.lightspots.it.web.slider
 
+import ch.lightspots.it.web.manager.VisibilityManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -47,13 +48,22 @@ import styled.styledDiv
 import styled.styledLi
 import styled.styledOl
 import kotlin.browser.window
+import kotlin.coroutines.coroutineContext
+
+enum class Direction {
+  LEFT, RIGHT
+}
 
 interface SliderProps : RProps {
   var images: Array<String>
+  var random: Boolean
+  var direction: Direction
 }
 
 interface SliderState : RState {
   var activeImage: Int
+  var activeDot: Int
+  var transitionEnabled: Boolean
 }
 
 
@@ -69,17 +79,41 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     startAutoRotation()
   }
 
+  private val onVisibilityChange: (VisibilityManager.Visibility) -> Unit = {
+    when (it) {
+      VisibilityManager.Visibility.HIDDEN -> {
+        // stop rotation
+        job?.cancel()
+      }
+      VisibilityManager.Visibility.VISIBLE -> {
+        // start rotation
+        startAutoRotation()
+      }
+    }
+  }
+
   override fun SliderState.init(props: SliderProps) {
-    activeImage = 0
+    activeImage = 1
+    activeDot = 1
+    transitionEnabled = false
   }
 
   override fun componentDidMount() {
     startAutoRotation()
     window.addEventListener("resize", onResize)
+    VisibilityManager.registerListener(onVisibilityChange)
+    // fix that wrong image is displayed as first
+    GlobalScope.launch {
+      do {
+        delay(100)
+      } while (sliderElem == null)
+      setState { }
+    }
   }
 
   override fun componentWillUnmount() {
     window.removeEventListener("resize", onResize)
+    VisibilityManager.unRegisterListener(onVisibilityChange)
     job?.cancel()
   }
 
@@ -103,7 +137,9 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
           listStyleType = ListStyleType.none
           whiteSpace = WhiteSpace.nowrap
           position = Position.relative
-          transition += Transition("left", 1.5.s, Timing.easeInOut, 0.s)
+          if (state.transitionEnabled) {
+            transition += Transition("left", 1.5.s, Timing.easeInOut, 0.s)
+          }
         }
         attrs {
           jsStyle {
@@ -112,6 +148,15 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         }
         ref {
           sliderElem = it as? HTMLElement
+        }
+        styledLi {
+          css {
+            display = Display.inlineBlock
+            width = 100.pct
+          }
+          figure("image") {
+            img(alt = "slider", src = props.images.last()) { }
+          }
         }
         for (image in props.images) {
           styledLi {
@@ -122,6 +167,15 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
             figure("image") {
               img(alt = "slider", src = image) { }
             }
+          }
+        }
+        styledLi {
+          css {
+            display = Display.inlineBlock
+            width = 100.pct
+          }
+          figure("image") {
+            img(alt = "slider", src = props.images.first()) { }
           }
         }
       }
@@ -136,7 +190,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         position = Position.relative
         top = (-30).px
       }
-      for (i in props.images.indices) {
+      for (i in props.images.indices.map { it + 1 }) {
         styledLi {
           css {
             display = Display.inlineBlock
@@ -145,7 +199,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
             borderRadius = 5.px
             cursor = Cursor.pointer
             margin(5.px)
-            if (i == state.activeImage) {
+            if (i == state.activeDot) {
               +"has-background-primary"
             } else {
               +"has-background-light"
@@ -156,6 +210,8 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
               startAutoRotation()
               setState {
                 activeImage = i
+                activeDot = i
+                transitionEnabled = true
               }
             }
           }
@@ -169,16 +225,57 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     job = GlobalScope.launch {
       while (isActive) {
         delay(5000)
-        setState {
-          activeImage = (activeImage + 1) % props.images.size
+        when (props.direction) {
+          Direction.LEFT -> rotateLeft()
+          Direction.RIGHT -> rotateRight()
         }
+      }
+    }
+  }
+
+  private suspend fun rotateRight() {
+    val newActiveImage = (state.activeImage) % (props.images.size) + 1
+    GlobalScope.launch(coroutineContext) {
+      if (newActiveImage == 1) {
+        setState {
+          activeImage += 1
+          activeDot = newActiveImage
+        }
+        delay(2000)
+      }
+      setState {
+        activeImage = newActiveImage
+        activeDot = newActiveImage
+        transitionEnabled = newActiveImage != 1
+      }
+    }
+  }
+
+  private suspend fun rotateLeft() {
+    var newActiveImage = (state.activeImage - 1)
+    GlobalScope.launch(coroutineContext) {
+      if (newActiveImage == 0) {
+        setState {
+          activeImage = 0
+          activeDot = props.images.size
+        }
+        newActiveImage = props.images.size
+        delay(2000)
+      }
+      setState {
+        activeImage = newActiveImage
+        activeDot = newActiveImage
+        transitionEnabled = newActiveImage != props.images.size
       }
     }
   }
 }
 
-fun RBuilder.slider(images: Array<String>) = child(Slider::class) {
+fun RBuilder.slider(images: Array<String>, random: Boolean = false, direction: Direction = Direction.RIGHT) = child(
+    Slider::class) {
   attrs {
     this.images = images
+    this.random = random // TODO
+    this.direction = direction
   }
 }
