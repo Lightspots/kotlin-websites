@@ -13,6 +13,7 @@ import kotlinx.css.Overflow
 import kotlinx.css.Position
 import kotlinx.css.TextAlign
 import kotlinx.css.WhiteSpace
+import kotlinx.css.border
 import kotlinx.css.borderRadius
 import kotlinx.css.cursor
 import kotlinx.css.display
@@ -34,7 +35,8 @@ import kotlinx.css.whiteSpace
 import kotlinx.css.width
 import kotlinx.html.currentTimeMillis
 import kotlinx.html.js.onClickFunction
-import org.w3c.dom.DataTransferItemList
+import kotlinx.html.js.onMouseOutFunction
+import kotlinx.html.js.onMouseOverFunction
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
 import react.RBuilder
@@ -49,10 +51,12 @@ import styled.css
 import styled.styledDiv
 import styled.styledLi
 import styled.styledOl
+import styled.styledProgress
 import kotlin.browser.window
 import kotlin.coroutines.coroutineContext
-import kotlin.js.Date
 import kotlin.random.Random
+import kotlin.time.Duration
+import kotlin.time.seconds
 
 enum class Direction {
   LEFT, RIGHT
@@ -62,6 +66,7 @@ interface SliderProps : RProps {
   var images: Array<String>
   var random: Boolean
   var direction: Direction
+  var duration: Duration
 }
 
 interface SliderState : RState {
@@ -69,10 +74,14 @@ interface SliderState : RState {
   var activeDot: Int
   var transitionEnabled: Boolean
   var images: Array<String>
+  var percent: Int
 }
 
-
 class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
+  companion object {
+    private const val animationDuration = 25L
+  }
+
   private var sliderElem: HTMLElement? = null
   private var job: Job? = null
 
@@ -108,6 +117,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     } else {
       props.images
     }
+    percent = 0
   }
 
   override fun componentDidMount() {
@@ -136,6 +146,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
       }
       images()
       dots()
+      progressBar()
     }
   }
 
@@ -143,6 +154,10 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     styledDiv {
       css {
         overflow = Overflow.hidden
+      }
+      attrs {
+        onMouseOverFunction = this@Slider::mouseIn
+        onMouseOutFunction = this@Slider::mouseOut
       }
       styledOl {
         css {
@@ -202,6 +217,10 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         position = Position.relative
         top = (-30).px
       }
+      attrs {
+        onMouseOverFunction = this@Slider::mouseIn
+        onMouseOutFunction = this@Slider::mouseOut
+      }
       for (i in state.images.indices.map { it + 1 }) {
         styledLi {
           css {
@@ -224,6 +243,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
                 activeImage = i
                 activeDot = i
                 transitionEnabled = true
+                percent = 0
               }
             }
           }
@@ -232,14 +252,41 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     }
   }
 
+  private fun RBuilder.progressBar() {
+    styledProgress {
+      css {
+        position = Position.relative
+        top = (-50).px
+        height = 5.px
+        width = 100.pct
+        border = "none"
+      }
+      attrs {
+        max = "1000"
+        value = state.percent.toString()
+      }
+    }
+  }
+
   private fun startAutoRotation() {
     job?.cancel()
+    val steps = (props.duration.inMilliseconds / animationDuration).toInt()
+    val increment = 1000 / steps
     job = GlobalScope.launch {
       while (isActive) {
-        delay(5000)
-        when (props.direction) {
-          Direction.LEFT -> rotateLeft()
-          Direction.RIGHT -> rotateRight()
+        delay(animationDuration)
+        val p = (state.percent + increment)
+        setState {
+          percent = p
+        }
+        if (p > 1000) {
+          when (props.direction) {
+            Direction.LEFT -> rotateLeft()
+            Direction.RIGHT -> rotateRight()
+          }
+          setState {
+            percent = 0
+          }
         }
       }
     }
@@ -281,6 +328,14 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
       }
     }
   }
+
+  private fun mouseIn(e: Event) {
+    job?.cancel()
+  }
+
+  private fun mouseOut(e: Event) {
+    startAutoRotation()
+  }
 }
 
 fun RBuilder.slider(images: Array<String>, random: Boolean = false, direction: Direction = Direction.RIGHT) = child(
@@ -289,6 +344,7 @@ fun RBuilder.slider(images: Array<String>, random: Boolean = false, direction: D
     this.images = images
     this.random = random
     this.direction = direction
+    this.duration = 5.seconds
   }
 }
 

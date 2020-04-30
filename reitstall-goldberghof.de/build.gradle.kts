@@ -23,6 +23,9 @@ kotlin {
     browser {
     }
   }
+  sourceSets.all {
+    languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
+  }
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpack> {
