@@ -3,24 +3,32 @@ package ch.lightspots.it.web.slider
 import ch.lightspots.it.web.manager.VisibilityManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.css.Color
 import kotlinx.css.Cursor
 import kotlinx.css.Display
+import kotlinx.css.JustifyContent
 import kotlinx.css.ListStyleType
 import kotlinx.css.Overflow
 import kotlinx.css.Position
 import kotlinx.css.TextAlign
 import kotlinx.css.WhiteSpace
+import kotlinx.css.backgroundColor
 import kotlinx.css.border
 import kotlinx.css.borderRadius
+import kotlinx.css.color
 import kotlinx.css.cursor
 import kotlinx.css.display
+import kotlinx.css.em
 import kotlinx.css.height
+import kotlinx.css.justifyContent
 import kotlinx.css.listStyleType
 import kotlinx.css.margin
 import kotlinx.css.marginBottom
+import kotlinx.css.opacity
 import kotlinx.css.overflow
 import kotlinx.css.pct
 import kotlinx.css.position
@@ -28,6 +36,7 @@ import kotlinx.css.properties.Timing
 import kotlinx.css.properties.Transition
 import kotlinx.css.properties.s
 import kotlinx.css.px
+import kotlinx.css.right
 import kotlinx.css.textAlign
 import kotlinx.css.top
 import kotlinx.css.transition
@@ -44,10 +53,13 @@ import react.RComponent
 import react.RProps
 import react.RState
 import react.dom.figure
+import react.dom.i
 import react.dom.img
 import react.dom.jsStyle
+import react.dom.span
 import react.setState
 import styled.css
+import styled.styledButton
 import styled.styledDiv
 import styled.styledLi
 import styled.styledOl
@@ -75,6 +87,7 @@ interface SliderState : RState {
   var transitionEnabled: Boolean
   var images: Array<String>
   var percent: Int
+  var buttonsDisabled: Boolean
 }
 
 class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
@@ -118,6 +131,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
       props.images
     }
     percent = 0
+    buttonsDisabled = false
   }
 
   override fun componentDidMount() {
@@ -142,11 +156,12 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
   override fun RBuilder.render() {
     styledDiv {
       css {
-        marginBottom = (-25).px
+        marginBottom = (-60).px
       }
       images()
       dots()
       progressBar()
+      buttons()
     }
   }
 
@@ -252,6 +267,95 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     }
   }
 
+  private fun RBuilder.buttons() {
+    styledDiv {
+      css {
+        position = Position.relative
+        top = sliderElem?.let { (-it.offsetHeight / 2 - 60).px } ?: (-150).px
+        width = 100.pct
+        display = Display.flex
+        justifyContent = JustifyContent.spaceBetween
+      }
+      attrs {
+        onMouseOverFunction = this@Slider::mouseIn
+        onMouseOutFunction = this@Slider::mouseOut
+      }
+      // left button
+      styledButton {
+        css {
+          height = 2.5.em
+          textAlign = TextAlign.center
+          backgroundColor = Color.black
+          color = Color.white
+          opacity = 0.5
+          border = "none"
+          disabled {
+            color = Color.black
+            opacity = 0.25
+          }
+        }
+        span("icon is-small") {
+          i("fas fa-chevron-left") {}
+        }
+        attrs {
+          disabled = state.buttonsDisabled
+          onClickFunction = {
+            GlobalScope.launch {
+              setState {
+                buttonsDisabled = true
+              }
+              rotateLeft {
+                setState {
+                  buttonsDisabled = false
+                }
+              }
+              setState {
+                percent = 0
+              }
+            }
+          }
+        }
+      }
+
+      // right button
+      styledButton {
+        css {
+          height = 2.5.em
+          textAlign = TextAlign.center
+          backgroundColor = Color.black
+          color = Color.white
+          opacity = 0.5
+          border = "none"
+          disabled {
+            color = Color.black
+            opacity = 0.25
+          }
+        }
+        span("icon is-small") {
+          i("fas fa-chevron-right") {}
+        }
+        attrs {
+          disabled = state.buttonsDisabled
+          onClickFunction = {
+            GlobalScope.launch {
+              setState {
+                buttonsDisabled = true
+              }
+              rotateRight {
+                setState {
+                  buttonsDisabled = false
+                }
+              }
+              setState {
+                percent = 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   private fun RBuilder.progressBar() {
     styledProgress {
       css {
@@ -292,7 +396,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
     }
   }
 
-  private suspend fun rotateRight() {
+  private suspend fun rotateRight(cb: (() -> Unit)? = null) {
     val newActiveImage = (state.activeImage) % (state.images.size) + 1
     GlobalScope.launch(coroutineContext) {
       if (newActiveImage == 1) {
@@ -307,10 +411,11 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         activeDot = newActiveImage
         transitionEnabled = newActiveImage != 1
       }
+      cb?.invoke()
     }
   }
 
-  private suspend fun rotateLeft() {
+  private suspend fun rotateLeft(cb: (() -> Unit)? = null) {
     var newActiveImage = (state.activeImage - 1)
     GlobalScope.launch(coroutineContext) {
       if (newActiveImage == 0) {
@@ -326,6 +431,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
         activeDot = newActiveImage
         transitionEnabled = newActiveImage != state.images.size
       }
+      cb?.invoke()
     }
   }
 
