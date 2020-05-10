@@ -27,6 +27,9 @@ dependencies {
 kotlin {
   target {
     useCommonJs()
-    nodejs {  }
+    nodejs { }
+  }
+  sourceSets.all {
+    languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
   }
 }
