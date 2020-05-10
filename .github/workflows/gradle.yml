@@ -39,14 +39,13 @@ jobs:
         run: ./gradlew browserDistribution
       - name: Deploy reitstall-goldberghof.de
         if: "!contains(github.event_name, 'pull_request')"
-        uses: SamKirkland/FTP-Deploy-Action@3.1.0
+        uses: socram8888/ftp-hash-sync@v1
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}/reitstall-goldberghof
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
-          known-hosts: ${{ secrets.FTP_HOST_KEY }}
-          git-ftp-args: --remote-root reitstall-goldberghof/
-          local-dir: reitstall-goldberghof.de/build/distributions/
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          destination: reitstall-goldberghof/
+          source: reitstall-goldberghof.de/build/distributions/
       - name: comment PR
         if: "contains(github.event_name, 'pull_request')"
         uses: unsplash/comment-on-pr@master
