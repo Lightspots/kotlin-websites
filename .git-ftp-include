@@ -1,1 +1,4 @@
 !./reitstall-goldberghof.de/build/distributions/
+
+./reitstall-goldberghof.de/build/distributions/images/gelaende/LuftAufnahme.jpg:reitstall-goldberghof.de/src/main/resources/images/gelaende/LuftAufnahme.jpg
+./reitstall-goldberghof.de/build/distributions/images/gelaende/LuftAufnahme_small.jpg:reitstall-goldberghof.de/src/main/resources/images/gelaende/LuftAufnahme_small.jpg
