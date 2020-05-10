@@ -36,8 +36,9 @@ jobs:
       - name: Deploy reitstall-goldberghof.de
         uses: SamKirkland/FTP-Deploy-Action@3.1.0
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}/.
+          ftp-server: ${{ secrets.FTP_SERVER }}/public_html
           ftp-username: ${{ secrets.FTP_REITSTALL_USERNAME }}
           ftp-password: ${{ secrets.FTP_REITSTALL_PASSWORD }}
           known-hosts: ${{ secrets.FTP_HOST_KEY }}
-          local-dir: ./reitstall-goldberghof.de/build/distributions/
+          git-ftp-args: --remote-root public_html/
+          local-dir: reitstall-goldberghof.de/build/distributions/
