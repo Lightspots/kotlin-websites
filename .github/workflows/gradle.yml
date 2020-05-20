@@ -50,13 +50,16 @@ jobs:
         with:
           name: reitstall-goldberghof.de # Download artifact named `my_artifact_name` (matches build step: Upload bundle)
           path: dist # Optional, downloads to current working directory under folder {artifact_name} if not specified
-      - name: Install lftp
-        run: sudo apt update && sudo apt install -y lftp
-      - name: Add known host
-        run: mkdir -v -p ~/.ssh && chmod 700 ~/.ssh && echo ${{ secrets.FTP_HOST_KEY }} > ~/.ssh/known_hosts
-      - name: Upload to FTP
+      - name: Deploy to dev server
         if: "!contains(github.event_name, 'pull_request')"
-        run: lftp ${{ secrets.FTP_SERVER }} -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} -e "mirror --reverse --continue --dereference dist reitstall-goldberghof; quit"
+        uses: Lightspots/github-action-sftp-deploy@master
+        with:
+          host: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          known_hosts: ${{ secrets.FTP_HOST_KEY }}
+          source: dist
+          remote: reitstall-goldberghof
       - name: comment PR
         if: "contains(github.event_name, 'pull_request')"
         uses: unsplash/comment-on-pr@master
