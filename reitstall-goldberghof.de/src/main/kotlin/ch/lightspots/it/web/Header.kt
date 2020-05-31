@@ -1,34 +1,27 @@
 package ch.lightspots.it.web
 
+import ch.lightspots.it.web.menu.LinkMenuItem
+import ch.lightspots.it.web.menu.Logo
+import ch.lightspots.it.web.menu.menu
 import react.RBuilder
 import react.RProps
 import react.RPureComponent
 import react.RState
-import react.dom.a
+import react.createElement
 import react.dom.header
-import react.dom.img
 
 class Header : RPureComponent<RProps, RState>() {
   override fun RBuilder.render() {
     val values = Link.values().filter { it.headerEntry }
-    val middle = values.size / 2
-    header("level") {
-      menuItems(values, 0, middle)
-      a(href = Link.INDEX.href, classes = "level-item has-text-centered") {
-        img(alt = "logo", src = "images/logo/Logo.png") {}
-      }
-      menuItems(values, middle, values.size)
-    }
-  }
-
-  private fun RBuilder.menuItems(links: List<Link>, from: Int, to: Int) {
-    for (i in from until to) {
-      val l = links[i]
-      a(href = l.href, classes = "level-item has-text-centered") {
-        +l.displayName
-      }
+    header {
+      menu(
+          logo = Logo(createElement("img", ImageProps("logo", "images/logo/Logo.png"), null), Link.INDEX.href),
+          menuItems = values.map { LinkMenuItem(it.displayName, it.href) }
+      )
     }
   }
 }
+
+private data class ImageProps(val alt: String, val src: String): RProps
 
 fun RBuilder.header() = child(Header::class) {}
