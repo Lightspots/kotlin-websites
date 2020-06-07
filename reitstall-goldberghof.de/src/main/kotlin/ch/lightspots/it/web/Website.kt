@@ -13,9 +13,11 @@ import react.router.dom.switch
 
 class Website : RComponent<RProps, RState>() {
   override fun RBuilder.render() {
+    div("container") {
+      header()
+    }
     div("section") {
       div("container") {
-        header()
         hashRouter {
           switch {
             Link.values().forEach {

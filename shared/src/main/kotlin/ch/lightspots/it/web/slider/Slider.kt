@@ -3,7 +3,6 @@ package ch.lightspots.it.web.slider
 import ch.lightspots.it.web.manager.VisibilityManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -36,7 +35,6 @@ import kotlinx.css.properties.Timing
 import kotlinx.css.properties.Transition
 import kotlinx.css.properties.s
 import kotlinx.css.px
-import kotlinx.css.right
 import kotlinx.css.textAlign
 import kotlinx.css.top
 import kotlinx.css.transition
@@ -289,9 +287,11 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
           color = Color.white
           opacity = 0.5
           border = "none"
+          cursor = Cursor.pointer
           disabled {
             color = Color.black
             opacity = 0.25
+            cursor = Cursor.auto
           }
         }
         span("icon is-small") {
