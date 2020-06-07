@@ -19,12 +19,18 @@ import kotlinx.css.properties.ms
 import kotlinx.css.properties.transition
 import kotlinx.css.px
 import kotlinx.css.textDecoration
+import kotlinx.html.js.onClickFunction
+import kotlinx.html.role
+import org.w3c.dom.events.Event
 import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
 import react.ReactElement
 import react.dom.a
+import react.dom.div
+import react.dom.span
+import react.setState
 import styled.css
 import styled.styledA
 import styled.styledDiv
@@ -36,7 +42,9 @@ interface MenuProps : RProps {
   var menuItems: List<MenuItem>
 }
 
-interface MenuState : RState
+interface MenuState : RState {
+  var isMobileMenuOpen: Boolean
+}
 
 sealed class MenuItem(
     open val title: String
@@ -53,9 +61,14 @@ data class Logo(val content: ReactElement, val href: String)
 
 class Menu(props: MenuProps) : RComponent<MenuProps, MenuState>(props) {
 
+  override fun MenuState.init() {
+    isMobileMenuOpen = false
+  }
+
   override fun RBuilder.render() {
     styledDiv {
       css {
+        +"is-hidden-touch"
         display = Display.flex
         justifyContent = JustifyContent.spaceBetween
         alignItems = Align.stretch
@@ -79,7 +92,79 @@ class Menu(props: MenuProps) : RComponent<MenuProps, MenuState>(props) {
         }
       }
     }
+    styledNav {
+      css {
+        +"navbar"
+        +"is-hidden-desktop"
+      }
+      attrs {
+        role = "navigation"
+      }
+      styledDiv {
+        css {
+          +"navbar-brand"
+        }
+        styledA(href = props.logo.href) {
+          css {
+            +"navbar-item"
+          }
+          child(props.logo.content)
+        }
 
+        styledA {
+          css {
+            +"navbar-burger"
+            +"burger"
+            if (state.isMobileMenuOpen) {
+              +"is-active"
+            }
+          }
+          attrs {
+            role = "button"
+            onClickFunction = ::onBurgerClick
+          }
+          span { }
+          span { }
+          span { }
+        }
+      }
+      styledDiv {
+        css {
+          +"navbar-menu"
+          if (state.isMobileMenuOpen) {
+            +"is-active"
+          }
+        }
+        div(classes = "navbar-start") {
+          props.menuItems.forEach {
+            when (it) {
+              is LinkMenuItem -> {
+                a(href = it.href, classes = "navbar-item") {
+                  +it.title
+                  attrs {
+                    onClickFunction = ::onMenuClick
+                  }
+                }
+              }
+              else -> TODO()
+            }
+          }
+        }
+      }
+    }
+
+  }
+
+  private fun onBurgerClick(e: Event) {
+    setState {
+      isMobileMenuOpen = !state.isMobileMenuOpen
+    }
+  }
+
+  private fun onMenuClick(e: Event) {
+    setState {
+      isMobileMenuOpen = false
+    }
   }
 
   private fun RBuilder.renderLogo(logo: Logo) {
