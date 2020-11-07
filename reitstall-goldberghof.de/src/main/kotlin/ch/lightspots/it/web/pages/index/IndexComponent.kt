@@ -5,9 +5,13 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
+import react.dom.a
+import react.dom.br
 import react.dom.div
 import react.dom.h1
 import react.dom.p
+import react.dom.source
+import react.dom.video
 
 
 val images = arrayOf(
@@ -29,8 +33,27 @@ class IndexComponent : RComponent<RProps, RState>() {
       p {
         +"Als Familienbetrieb geben wir unser Bestes, um Ihnen und Ihren Pferden das bestmögliche zu bieten."
       }
+      video {
+        attrs {
+          controls = true
+          poster = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.jpg"
+        }
+        source {
+          attrs {
+            src = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4"
+            type = "video/mp4"
+          }
+        }
+        p {
+          +"Ihr Browser kann dieses Video nicht wiedergeben"
+          br {  }
+          +"Sie können ihn unter"
+          a("https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4") { +"https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4" }
+          +"abrufen"
+        }
+      }
       p {
-        +"Unser Hof setzt sich aus diversen unterschiedlichen Pferdeboxen, zwei Reitpätzen, eine Reithalle, sowie eine Longierhalle zusammen, welche hier ersichtlich sind:"
+        +"Unser Hof setzt sich aus diversen unterschiedlichen Pferdeboxen, zwei Reitpätzen, einer Reithalle, sowie einer Longierhalle zusammen"
       }
       overviewMap()
     }

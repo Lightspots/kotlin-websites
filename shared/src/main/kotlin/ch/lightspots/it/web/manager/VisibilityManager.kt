@@ -2,7 +2,7 @@ package ch.lightspots.it.web.manager
 
 import org.w3c.dom.events.Event
 import org.w3c.dom.get
-import kotlin.browser.document
+import kotlinx.browser.document
 
 /**
  * Wrapper around the Page Visibility Api

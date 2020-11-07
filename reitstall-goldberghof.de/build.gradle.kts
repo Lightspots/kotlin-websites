@@ -1,5 +1,5 @@
 plugins {
-  id("org.jetbrains.kotlin.js")
+  kotlin("js")
 }
 
 version = "1.0-SNAPSHOT"
@@ -13,15 +13,16 @@ dependencies {
   implementation(npm("react-router-dom", Versions.reactRouter))
 
   //Kotlin Styled
-  implementation(npm("styled-components"))
-  implementation(npm("inline-style-prefixer"))
+  implementation(npm("styled-components", Versions.styled))
+  implementation(npm("inline-style-prefixer", Versions.inlineStylePrefixer))
 }
 
 kotlin {
-  target {
+  js {
     useCommonJs()
-    browser {
-    }
+    // To build distributions and run tests for browser or Node.js use one or both of:
+    browser()
+    binaries.executable()
   }
   sourceSets.all {
     languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")

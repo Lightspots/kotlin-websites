@@ -1,5 +1,5 @@
 plugins {
-  id("org.jetbrains.kotlin.js")
+  kotlin("js")
 }
 
 version = "1.0-SNAPSHOT"
@@ -20,14 +20,14 @@ dependencies {
   //Kotlin Styled
   api("org.jetbrains:kotlin-styled:${Versions.styledKotlin}")
   api("org.jetbrains:kotlin-css:${Versions.cssKotlin}")
-  implementation(npm("styled-components"))
-  implementation(npm("inline-style-prefixer"))
+  implementation(npm("styled-components", Versions.styled))
+  implementation(npm("inline-style-prefixer", Versions.inlineStylePrefixer))
 }
 
 kotlin {
-  target {
+  js {
     useCommonJs()
-    nodejs { }
+    browser()
   }
   sourceSets.all {
     languageSettings.useExperimentalAnnotation("kotlin.time.ExperimentalTime")
