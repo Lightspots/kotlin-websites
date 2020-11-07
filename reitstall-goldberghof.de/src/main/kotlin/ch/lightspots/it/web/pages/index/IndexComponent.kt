@@ -10,6 +10,7 @@ import react.dom.br
 import react.dom.div
 import react.dom.h1
 import react.dom.p
+import react.dom.source
 import react.dom.video
 
 
@@ -34,8 +35,14 @@ class IndexComponent : RComponent<RProps, RState>() {
       }
       video {
         attrs {
-          src = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4"
           controls = true
+          poster = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.jpg"
+        }
+        source {
+          attrs {
+            src = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4"
+            type = "video/mp4"
+          }
         }
         p {
           +"Ihr Browser kann dieses Video nicht wiedergeben"
