@@ -34,14 +34,14 @@ class IndexComponent : RComponent<RProps, RState>() {
       }
       video {
         attrs {
-          src = "videos/Heuen_2017.mp4"
+          src = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4"
           controls = true
         }
         p {
           +"Ihr Browser kann dieses Video nicht wiedergeben"
           br {  }
           +"Sie können ihn unter"
-          a("videos/Heuen_2017.mp4") { +"videos/Heuen_2017.mp4" }
+          a("https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4") { +"https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4" }
           +"abrufen"
         }
       }
