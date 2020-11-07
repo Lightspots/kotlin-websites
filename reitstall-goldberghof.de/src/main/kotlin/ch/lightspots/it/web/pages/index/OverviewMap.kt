@@ -42,7 +42,7 @@ import react.setState
 import styled.css
 import styled.styledCanvas
 import styled.styledH3
-import kotlin.browser.window
+import kotlinx.browser.window
 
 interface OverviewMapState : RState {
   var hoveredArea: Int?

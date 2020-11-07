@@ -62,7 +62,7 @@ import styled.styledDiv
 import styled.styledLi
 import styled.styledOl
 import styled.styledProgress
-import kotlin.browser.window
+import kotlinx.browser.window
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 import kotlin.time.Duration
