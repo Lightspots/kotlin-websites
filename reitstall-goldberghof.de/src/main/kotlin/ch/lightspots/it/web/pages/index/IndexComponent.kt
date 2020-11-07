@@ -5,9 +5,12 @@ import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
+import react.dom.a
+import react.dom.br
 import react.dom.div
 import react.dom.h1
 import react.dom.p
+import react.dom.video
 
 
 val images = arrayOf(
@@ -29,8 +32,21 @@ class IndexComponent : RComponent<RProps, RState>() {
       p {
         +"Als Familienbetrieb geben wir unser Bestes, um Ihnen und Ihren Pferden das bestmögliche zu bieten."
       }
+      video {
+        attrs {
+          src = "videos/Heuen_2017.mp4"
+          controls = true
+        }
+        p {
+          +"Ihr Browser kann dieses Video nicht wiedergeben"
+          br {  }
+          +"Sie können ihn unter"
+          a("videos/Heuen_2017.mp4") { +"videos/Heuen_2017.mp4" }
+          +"abrufen"
+        }
+      }
       p {
-        +"Unser Hof setzt sich aus diversen unterschiedlichen Pferdeboxen, zwei Reitpätzen, eine Reithalle, sowie eine Longierhalle zusammen, welche hier ersichtlich sind:"
+        +"Unser Hof setzt sich aus diversen unterschiedlichen Pferdeboxen, zwei Reitpätzen, einer Reithalle, sowie einer Longierhalle zusammen"
       }
       overviewMap()
     }
