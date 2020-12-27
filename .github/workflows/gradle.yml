@@ -63,7 +63,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "Link to develop page: https://dev.lp42.ch/reitstall-goldberghof"
+          msg: "Link to develop page: https://dev.ls42.ch/reitstall-goldberghof"
           check_for_duplicate_msg: true
 
   deploy_prod:
