@@ -1,17 +1,17 @@
 package ch.lightspots.it.web.pages.index
 
 import ch.lightspots.it.web.slider.slider
+import kotlinx.html.IFRAME
+import kotlinx.html.attributes.StringAttribute
+import kotlinx.html.attributes.TickerAttribute
 import react.RBuilder
 import react.RComponent
 import react.RProps
 import react.RState
-import react.dom.a
-import react.dom.br
 import react.dom.div
 import react.dom.h1
+import react.dom.iframe
 import react.dom.p
-import react.dom.source
-import react.dom.video
 
 
 val images = arrayOf(
@@ -33,23 +33,16 @@ class IndexComponent : RComponent<RProps, RState>() {
       p {
         +"Als Familienbetrieb geben wir unser Bestes, um Ihnen und Ihren Pferden das bestmögliche zu bieten."
       }
-      video {
-        attrs {
-          controls = true
-          poster = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.jpg"
-        }
-        source {
+      div("video-container") {
+        // <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/QaO0c1SfxY8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        // <iframe width="560" height="315" src="https://www.youtube.com/embed/QaO0c1SfxY8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        iframe {
           attrs {
-            src = "https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4"
-            type = "video/mp4"
+            src = "https://www.youtube-nocookie.com/embed/QaO0c1SfxY8"
+            frameborder = "0"
+            allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen = true
           }
-        }
-        p {
-          +"Ihr Browser kann dieses Video nicht wiedergeben"
-          br {  }
-          +"Sie können ihn unter"
-          a("https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4") { +"https://cdn.lp42.ch/reitstall-goldberghof/videos/heuen_2017.mp4" }
-          +"abrufen"
         }
       }
       p {
@@ -60,3 +53,21 @@ class IndexComponent : RComponent<RProps, RState>() {
   }
 
 }
+
+var IFRAME.frameborder: String
+  get() = StringAttribute()[this, "frameborder"]
+  set(newValue) {
+    StringAttribute()[this, "frameborder"] = newValue
+  }
+
+var IFRAME.allow: String
+  get() = StringAttribute()[this, "allow"]
+  set(newValue) {
+    StringAttribute()[this, "allow"] = newValue
+  }
+
+var IFRAME.allowfullscreen: Boolean
+  get() = TickerAttribute()[this, "allowfullscreen"]
+  set(newValue) {
+    TickerAttribute()[this, "allowfullscreen"] = newValue
+  }

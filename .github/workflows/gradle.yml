@@ -13,7 +13,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
@@ -41,7 +41,7 @@ jobs:
           path: reitstall-goldberghof.de/build/distributions # Upload content of `dist` folder
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - build
     steps:
@@ -63,11 +63,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          msg: "Link to develop page: https://dev.lp42.ch/reitstall-goldberghof"
+          msg: "Link to develop page: https://dev.ls42.ch/reitstall-goldberghof"
           check_for_duplicate_msg: true
 
   deploy_prod:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs:
       - build
     if: "contains(github.ref, 'master')"
