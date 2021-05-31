@@ -1,17 +1,9 @@
 package ch.lightspots.it.web.pages.index
 
 import ch.lightspots.it.web.Link
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.css.PointerEvents
-import kotlinx.css.Position
-import kotlinx.css.em
-import kotlinx.css.marginTop
-import kotlinx.css.pointerEvents
-import kotlinx.css.position
+import kotlinx.browser.window
+import kotlinx.coroutines.*
+import kotlinx.css.*
 import kotlinx.html.AREA
 import kotlinx.html.AreaShape
 import kotlinx.html.attributes.enumEncode
@@ -23,26 +15,11 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.HTMLImageElement
 import org.w3c.dom.events.Event
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
-import react.ReactElement
-import react.dom.RDOMBuilder
-import react.dom.h2
-import react.dom.h3
-import react.dom.h4
-import react.dom.img
-import react.dom.jsStyle
-import react.dom.map
-import react.dom.mark
-import react.dom.p
-import react.dom.tag
-import react.setState
+import react.*
+import react.dom.*
 import styled.css
 import styled.styledCanvas
 import styled.styledH3
-import kotlinx.browser.window
 
 interface OverviewMapState : RState {
   var hoveredArea: Int?

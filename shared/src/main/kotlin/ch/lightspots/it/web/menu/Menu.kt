@@ -1,41 +1,19 @@
 package ch.lightspots.it.web.menu
 
-import kotlinx.css.Align
-import kotlinx.css.Color
-import kotlinx.css.Display
-import kotlinx.css.JustifyContent
-import kotlinx.css.alignItems
-import kotlinx.css.backgroundColor
-import kotlinx.css.color
-import kotlinx.css.display
-import kotlinx.css.height
-import kotlinx.css.justifyContent
-import kotlinx.css.paddingLeft
-import kotlinx.css.paddingRight
-import kotlinx.css.pct
+import kotlinx.css.*
 import kotlinx.css.properties.TextDecoration
 import kotlinx.css.properties.Timing
 import kotlinx.css.properties.ms
 import kotlinx.css.properties.transition
-import kotlinx.css.px
-import kotlinx.css.textDecoration
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.role
 import org.w3c.dom.events.Event
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
-import react.ReactElement
+import react.*
 import react.dom.a
+import react.dom.attrs
 import react.dom.div
 import react.dom.span
-import react.setState
-import styled.css
-import styled.styledA
-import styled.styledDiv
-import styled.styledNav
-import styled.styledSpan
+import styled.*
 
 interface MenuProps : RProps {
   var logo: Logo
