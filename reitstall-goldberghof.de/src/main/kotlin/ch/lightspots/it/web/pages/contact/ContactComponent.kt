@@ -4,12 +4,7 @@ import react.RBuilder
 import react.RProps
 import react.RPureComponent
 import react.RState
-import react.dom.br
-import react.dom.div
-import react.dom.h1
-import react.dom.h3
-import react.dom.iframe
-import react.dom.p
+import react.dom.*
 
 class ContactComponent : RPureComponent<RProps, RState>() {
   override fun RBuilder.render() {

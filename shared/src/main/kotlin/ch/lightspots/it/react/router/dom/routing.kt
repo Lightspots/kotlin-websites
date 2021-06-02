@@ -1,10 +1,6 @@
 package ch.lightspots.it.react.router.dom
 
-import react.Component
-import react.RBuilder
-import react.RClass
-import react.RProps
-import react.ReactElement
+import react.*
 import kotlin.reflect.KClass
 
 fun RBuilder.route(

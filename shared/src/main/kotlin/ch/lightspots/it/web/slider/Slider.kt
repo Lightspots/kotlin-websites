@@ -1,72 +1,25 @@
 package ch.lightspots.it.web.slider
 
 import ch.lightspots.it.web.manager.VisibilityManager
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlinx.coroutines.launch
-import kotlinx.css.Color
-import kotlinx.css.Cursor
-import kotlinx.css.Display
-import kotlinx.css.JustifyContent
-import kotlinx.css.ListStyleType
-import kotlinx.css.Overflow
-import kotlinx.css.Position
-import kotlinx.css.TextAlign
-import kotlinx.css.WhiteSpace
-import kotlinx.css.backgroundColor
-import kotlinx.css.border
-import kotlinx.css.borderRadius
-import kotlinx.css.color
-import kotlinx.css.cursor
-import kotlinx.css.display
-import kotlinx.css.em
-import kotlinx.css.height
-import kotlinx.css.justifyContent
-import kotlinx.css.listStyleType
-import kotlinx.css.margin
-import kotlinx.css.marginBottom
-import kotlinx.css.opacity
-import kotlinx.css.overflow
-import kotlinx.css.pct
-import kotlinx.css.position
+import kotlinx.browser.window
+import kotlinx.coroutines.*
+import kotlinx.css.*
 import kotlinx.css.properties.Timing
 import kotlinx.css.properties.Transition
 import kotlinx.css.properties.s
-import kotlinx.css.px
-import kotlinx.css.textAlign
-import kotlinx.css.top
-import kotlinx.css.transition
-import kotlinx.css.whiteSpace
-import kotlinx.css.width
 import kotlinx.html.currentTimeMillis
 import kotlinx.html.js.onClickFunction
 import kotlinx.html.js.onMouseOutFunction
 import kotlinx.html.js.onMouseOverFunction
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.Event
-import react.RBuilder
-import react.RComponent
-import react.RProps
-import react.RState
-import react.dom.figure
-import react.dom.i
-import react.dom.img
-import react.dom.jsStyle
-import react.dom.span
-import react.setState
-import styled.css
-import styled.styledButton
-import styled.styledDiv
-import styled.styledLi
-import styled.styledOl
-import styled.styledProgress
-import kotlinx.browser.window
+import react.*
+import react.dom.*
+import styled.*
 import kotlin.coroutines.coroutineContext
 import kotlin.random.Random
 import kotlin.time.Duration
-import kotlin.time.seconds
+import kotlin.time.DurationUnit
 
 enum class Direction {
   LEFT, RIGHT
@@ -374,7 +327,7 @@ class Slider(props: SliderProps) : RComponent<SliderProps, SliderState>(props) {
 
   private fun startAutoRotation() {
     job?.cancel()
-    val steps = (props.duration.inMilliseconds / animationDuration).toInt()
+    val steps = (props.duration.toDouble(DurationUnit.MILLISECONDS) / animationDuration).toInt()
     val increment = 1000 / steps
     job = GlobalScope.launch {
       while (isActive) {
@@ -450,7 +403,7 @@ fun RBuilder.slider(images: Array<String>, random: Boolean = false, direction: D
     this.images = images
     this.random = random
     this.direction = direction
-    this.duration = 5.seconds
+    this.duration = Duration.seconds(5)
   }
 }
 
